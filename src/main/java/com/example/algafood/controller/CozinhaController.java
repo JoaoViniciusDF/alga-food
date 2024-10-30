@@ -4,12 +4,8 @@ import com.example.algafood.domain.model.Cozinha;
 import com.example.algafood.domain.service.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +18,7 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping("/listarCozinhas")
-    private ResponseEntity<List<Cozinha>> listarCozinhas() throws Throwable {
+    public ResponseEntity<List<Cozinha>> listarCozinhas() throws Throwable {
 
         try{
 
@@ -42,7 +38,7 @@ public class CozinhaController {
     }
 
     @GetMapping("/{idCozinha}")
-    private ResponseEntity<Optional<Cozinha>> listarCozinhas(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
+    public ResponseEntity<Optional<Cozinha>> listarCozinhas(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
 
         try{
 
@@ -54,6 +50,29 @@ public class CozinhaController {
 
             return ResponseEntity.ok(cozinha);
 
+        }catch (Exception e){
+            throw e.getCause();
+        }
+
+    }
+
+    @PostMapping("/salvarCozinha")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void salvarCozinha(@RequestBody Cozinha cozinha) throws Throwable {
+
+        try {
+            cozinhaService.salvarCozinha(cozinha);
+        }catch (Exception e){
+            throw e.getCause();
+        }
+
+    }
+
+    @PutMapping("/alterarCozinha/{idCozinha}")
+    public void salvarCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha) throws Throwable {
+
+        try {
+            cozinhaService.alterarCozinha(idCozinha, cozinha);
         }catch (Exception e){
             throw e.getCause();
         }
