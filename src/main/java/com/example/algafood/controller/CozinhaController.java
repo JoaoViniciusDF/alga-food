@@ -17,7 +17,7 @@ public class CozinhaController {
     @Autowired
     private CozinhaService cozinhaService;
 
-    @GetMapping("/listarCozinhas")
+    @GetMapping("/todos")
     public ResponseEntity<List<Cozinha>> listarCozinhas() throws Throwable {
 
         try{
@@ -38,7 +38,7 @@ public class CozinhaController {
     }
 
     @GetMapping("/{idCozinha}")
-    public ResponseEntity<Optional<Cozinha>> listarCozinhas(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
+    public ResponseEntity<Optional<Cozinha>> buscarCozinhaId(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
 
         try{
 
@@ -56,7 +56,7 @@ public class CozinhaController {
 
     }
 
-    @PostMapping("/salvarCozinha")
+    @PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
     public void salvarCozinha(@RequestBody Cozinha cozinha) throws Throwable {
 
@@ -68,11 +68,23 @@ public class CozinhaController {
 
     }
 
-    @PutMapping("/alterarCozinha/{idCozinha}")
-    public void salvarCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha) throws Throwable {
+    @PutMapping("/{idCozinha}")
+    public void updateCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha) throws Throwable {
 
         try {
-            cozinhaService.alterarCozinha(idCozinha, cozinha);
+            cozinha.setId(idCozinha);
+            cozinhaService.alterarCozinha(cozinha);
+        }catch (Exception e){
+            throw e.getCause();
+        }
+
+    }
+
+    @DeleteMapping("/{idCozinha}")
+    public void deletarCozinha(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
+
+        try {
+            cozinhaService.deletarCozinha(idCozinha);
         }catch (Exception e){
             throw e.getCause();
         }

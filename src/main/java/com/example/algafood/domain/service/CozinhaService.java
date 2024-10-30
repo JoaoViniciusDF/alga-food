@@ -28,8 +28,13 @@ public class CozinhaService {
     }
 
     @Transactional
-    public void alterarCozinha(Long idCozinha, Cozinha cozinha){
-        this.cozinhaRepository.update(idCozinha, cozinha.getNome());
+    public void alterarCozinha(Cozinha cozinha){
+        this.cozinhaRepository.updateById(cozinha.getId(), cozinha.getNome());
+    }
+
+    @Transactional
+    public void deletarCozinha(Long idCozinha){
+        cozinhaRepository.deleteById(idCozinha);
     }
 
 }
