@@ -19,4 +19,10 @@ public class CozinhaService {
 
     }
 
+    public Cozinha buscarCozinhaId(Long idCozinha){
+
+        return cozinhaRepository.findOneById(idCozinha);
+
+    }
+
 }
