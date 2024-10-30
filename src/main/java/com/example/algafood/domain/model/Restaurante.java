@@ -25,7 +25,7 @@ public class Restaurante {
     private Cozinha cozinha;
 
     @Column(name = "nome")
-    private String name;
+    private String nome;
 
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;

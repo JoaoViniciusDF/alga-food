@@ -19,7 +19,7 @@ public class Cozinha {
     private Long id;
 
     @Column(name = "nome")
-    private String name;
+    private String nome;
 
     @OneToMany(mappedBy = "cozinha")
     @Column(name = "id_restaurante")
