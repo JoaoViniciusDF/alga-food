@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -20,9 +19,5 @@ public class Cozinha {
 
     @Column(name = "nome")
     private String nome;
-
-    @OneToMany(mappedBy = "cozinha")
-    @Column(name = "id_restaurante")
-    private List<Restaurante> restaurante;
 
 }
