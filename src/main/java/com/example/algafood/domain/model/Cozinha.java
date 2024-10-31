@@ -1,6 +1,7 @@
 package com.example.algafood.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,6 +18,7 @@ public class Cozinha {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "${entity.notnull.message}")
     @Column(name = "nome")
     private String nome;
 

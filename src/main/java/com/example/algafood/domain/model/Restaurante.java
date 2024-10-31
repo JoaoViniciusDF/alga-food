@@ -1,9 +1,9 @@
 package com.example.algafood.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.math.BigDecimal;
 
@@ -19,14 +19,16 @@ public class Restaurante {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
     @ManyToOne()
+    @NotNull(message = "${entity.notnull.message}")
     @JoinColumn(name = "id_cozinha")
     private Cozinha cozinha;
 
+    @NotNull(message = "${entity.notnull.message}")
     @Column(name = "nome")
     private String nome;
 
+    @NotNull(message = "${entity.notnull.message}")
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 

@@ -1,6 +1,7 @@
 package com.example.algafood.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -13,6 +14,7 @@ public class FormaPagamento {
     @Column(name = "id")
     private Long id;
 
+    @NotNull(message = "${entity.notnull.message}")
     @Column(name = "ds_pagamento")
     private String descricao;
 
