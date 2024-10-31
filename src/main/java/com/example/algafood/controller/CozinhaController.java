@@ -18,7 +18,7 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping("/todos")
-    public ResponseEntity<List<Cozinha>> listarCozinhas() throws Throwable {
+    public ResponseEntity<List<Cozinha>> listarCozinhas() throws Exception {
 
         try{
 
@@ -31,14 +31,14 @@ public class CozinhaController {
             return ResponseEntity.ok(cozinhas);
 
         }catch (Exception e){
-            throw e.getCause();
+            throw new Exception(e.getMessage());
         }
 
 
     }
 
     @GetMapping("/{idCozinha}")
-    public ResponseEntity<Optional<Cozinha>> buscarCozinhaId(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
+    public ResponseEntity<Optional<Cozinha>> buscarCozinhaId(@PathVariable("idCozinha") Long idCozinha) throws Exception {
 
         try{
 
@@ -51,42 +51,42 @@ public class CozinhaController {
             return ResponseEntity.ok(cozinha);
 
         }catch (Exception e){
-            throw e.getCause();
+            throw new Exception(e.getMessage());
         }
 
     }
 
     @PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
-    public void salvarCozinha(@RequestBody Cozinha cozinha) throws Throwable {
+    public void salvarCozinha(@RequestBody Cozinha cozinha) throws Exception {
 
         try {
             cozinhaService.salvarCozinha(cozinha);
         }catch (Exception e){
-            throw e.getCause();
+            throw new Exception(e.getMessage());
         }
 
     }
 
     @PutMapping("/{idCozinha}")
-    public void updateCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha) throws Throwable {
+    public void updateCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha) throws Exception {
 
         try {
             cozinha.setId(idCozinha);
             cozinhaService.alterarCozinha(cozinha);
         }catch (Exception e){
-            throw e.getCause();
+            throw new Exception(e.getMessage());
         }
 
     }
 
     @DeleteMapping("/{idCozinha}")
-    public void deletarCozinha(@PathVariable("idCozinha") Long idCozinha) throws Throwable {
+    public void deletarCozinha(@PathVariable("idCozinha") Long idCozinha) throws Exception {
 
         try {
             cozinhaService.deletarCozinha(idCozinha);
         }catch (Exception e){
-            throw e.getCause();
+            throw new Exception(e.getMessage());
         }
 
     }
