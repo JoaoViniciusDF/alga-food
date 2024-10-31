@@ -2,6 +2,7 @@ package com.example.algafood.domain.service;
 
 import com.example.algafood.domain.model.Cozinha;
 import com.example.algafood.repository.CozinhaRepository;
+import com.example.algafood.repository.RestauranteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,9 @@ public class CozinhaService {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+
+    @Autowired
+    private RestauranteRepository restauranteRepository;
 
     public List<Cozinha> listarTodasCozinhas(){
         return cozinhaRepository.findAll();
@@ -35,6 +39,7 @@ public class CozinhaService {
 
     @Transactional
     public void deletarCozinha(Long idCozinha){
+        restauranteRepository.deleteByIdCozinha(idCozinha);
         cozinhaRepository.deleteById(idCozinha);
     }
 
