@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,54 +20,54 @@ public class CozinhaController {
     private CozinhaService cozinhaService;
 
     @GetMapping("/todos")
-    public ResponseEntity<List<Cozinha>> listarCozinhas() throws Exception {
+    public ResponseEntity<List<Object>> listarCozinhas(){
         try{
 
             List<Cozinha> cozinhas = cozinhaService.listarTodasCozinhas();
 
             if (cozinhas.isEmpty()) {
-                return ResponseEntity.notFound().build();
+                throw new BusinessException("Não existe cozinha!");
             }
 
-            return ResponseEntity.ok(cozinhas);
+            return ResponseEntity.ok(Collections.singletonList(cozinhas));
 
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }catch (BusinessException e){
+            return ResponseEntity.internalServerError().body(Collections.singletonList(e.getMessage()));
         }
     }
 
     @GetMapping("/{idCozinha}")
-    public ResponseEntity<Optional<Cozinha>> buscarCozinhaId(@PathVariable("idCozinha") Long idCozinha) throws Exception {
+    public ResponseEntity<Object> buscarCozinhaId(@PathVariable("idCozinha") Long idCozinha){
         try{
 
-            Optional<Cozinha> cozinha = Optional.ofNullable(cozinhaService.buscarCozinhaId(idCozinha));
+            Cozinha cozinha = cozinhaService.buscarCozinhaId(idCozinha);
 
-            if(cozinha.isEmpty()){
+            if(Optional.ofNullable(cozinha).isEmpty()){
                 return ResponseEntity.noContent().build();
             }
 
             return ResponseEntity.ok(cozinha);
 
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }catch (BusinessException e){
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
         }
     }
 
     @PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> salvarCozinha(@RequestBody Cozinha cozinha) throws Exception {
+    public ResponseEntity<Object> salvarCozinha(@RequestBody Cozinha cozinha){
         try {
 
             cozinhaService.salvarCozinha(cozinha);
             return ResponseEntity.noContent().build();
 
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+        }catch (BusinessException e){
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
         }
     }
 
     @PutMapping("/{idCozinha}")
-    public ResponseEntity<Object> updateCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha) throws Exception {
+    public ResponseEntity<Object> updateCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha){
         try {
 
             cozinha.setId(idCozinha);
@@ -79,7 +80,7 @@ public class CozinhaController {
     }
 
     @DeleteMapping("/{idCozinha}")
-    public ResponseEntity<Object> deletarCozinha(@PathVariable("idCozinha") Long idCozinha) throws BusinessException {
+    public ResponseEntity<Object> deletarCozinha(@PathVariable("idCozinha") Long idCozinha){
         try {
 
             cozinhaService.deletarCozinha(idCozinha);

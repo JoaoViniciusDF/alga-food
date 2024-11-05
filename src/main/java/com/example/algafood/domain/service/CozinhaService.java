@@ -19,12 +19,22 @@ public class CozinhaService {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-    public List<Cozinha> listarTodasCozinhas(){
-        return cozinhaRepository.findAll();
+    public List<Cozinha> listarTodasCozinhas() throws BusinessException{
+        try {
+            return cozinhaRepository.findAll();
+        }catch (BusinessException e){
+            throw new BusinessException("Não foi possivel listar todas as cozinhas");
+        }
+
     }
 
-    public Cozinha buscarCozinhaId(Long idCozinha){
-        return cozinhaRepository.findOneById(idCozinha);
+    public Cozinha buscarCozinhaId(Long idCozinha) throws BusinessException{
+        try {
+            return cozinhaRepository.findOneById(idCozinha);
+        }catch (BusinessException e){
+            throw new BusinessException("Não foi possivel enviar ");
+        }
+
     }
 
     @Transactional
@@ -33,7 +43,7 @@ public class CozinhaService {
     }
 
     @Transactional
-    public void alterarCozinha(Cozinha cozinha){
+    public void alterarCozinha(Cozinha cozinha) throws BusinessException{
         try {
 
             cozinhaRepository.updateById(cozinha.getId(), cozinha.getNome());
@@ -45,7 +55,7 @@ public class CozinhaService {
     }
 
     @Transactional
-    public void deletarCozinha(Long idCozinha){
+    public void deletarCozinha(Long idCozinha) throws BusinessException{
         try {
 
             restauranteRepository.deleteByIdCozinha(idCozinha);
