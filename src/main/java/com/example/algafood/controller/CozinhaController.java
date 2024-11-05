@@ -2,7 +2,6 @@ package com.example.algafood.controller;
 
 import com.example.algafood.domain.dto.CozinhaDTO;
 import com.example.algafood.domain.exception.BusinessException;
-import com.example.algafood.domain.model.Cozinha;
 import com.example.algafood.domain.service.CozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +55,7 @@ public class CozinhaController {
 
     @PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> salvarCozinha(@RequestBody Cozinha cozinha){
+    public ResponseEntity<Object> salvarCozinha(@RequestBody CozinhaDTO cozinha){
         try {
 
             cozinhaService.salvarCozinha(cozinha);
@@ -68,7 +67,7 @@ public class CozinhaController {
     }
 
     @PutMapping("/{idCozinha}")
-    public ResponseEntity<Object> updateCozinha(@RequestBody Cozinha cozinha, @PathVariable("idCozinha") Long idCozinha){
+    public ResponseEntity<Object> updateCozinha(@RequestBody CozinhaDTO cozinha, @PathVariable("idCozinha") Long idCozinha){
         try {
 
             cozinha.setId(idCozinha);

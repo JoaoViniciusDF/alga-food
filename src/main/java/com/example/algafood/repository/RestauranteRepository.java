@@ -11,12 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
-    public Restaurante findOneById(Long id);
-
-    @Modifying
-    @Transactional
-    void deleteByCozinhaId(@Param("idCozinha") Long idCozinha);
-
     @Modifying
     @Transactional
     @Query(

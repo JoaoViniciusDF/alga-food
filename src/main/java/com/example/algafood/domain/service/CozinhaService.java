@@ -3,6 +3,7 @@ package com.example.algafood.domain.service;
 import com.example.algafood.domain.dto.CozinhaDTO;
 import com.example.algafood.domain.exception.BusinessException;
 import com.example.algafood.domain.model.Cozinha;
+import com.example.algafood.domain.model.Restaurante;
 import com.example.algafood.repository.CozinhaRepository;
 import com.example.algafood.repository.RestauranteRepository;
 import jakarta.transaction.Transactional;
@@ -22,49 +23,45 @@ public class CozinhaService {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-    public List<CozinhaDTO> listarTodasCozinhas() throws BusinessException {
-        try {
+    private Cozinha toEntity(CozinhaDTO cozinhaDTO){
 
-            List<Cozinha> cozinhas = cozinhaRepository.findAll();
-            return cozinhas.stream()
-                    .map(cozinha -> new CozinhaDTO(cozinha.getId(), cozinha.getNome()))
-                    .collect(Collectors.toList());
-
-        } catch (BusinessException e) {
-            throw new BusinessException("Não foi possível listar todas as cozinhas");
+        if (cozinhaDTO == null) {
+            throw new IllegalArgumentException("cozinhaDTO não pode ser nulo");
         }
+
+        Cozinha cozinha = new Cozinha();
+        cozinha.setNome(cozinhaDTO.getNome());
+
+        return cozinha;
+
     }
 
-    public CozinhaDTO buscarCozinhaId(Long idCozinha) throws BusinessException{
-        try {
+    private List<CozinhaDTO> toDtoList(List<Cozinha> cozinhas){
 
-            Cozinha cozinha = cozinhaRepository.findOneById(idCozinha);
+        return cozinhas.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
 
-            if (Optional.ofNullable(cozinha).isEmpty()) {
-                throw new BusinessException("Cozinha não encontrada");
-            }
+    }
 
-            return new CozinhaDTO(cozinha.getId(), cozinha.getNome());
-
-        } catch (BusinessException e) {
-            throw new BusinessException(e.getMessage());
-        }
-
-
+    private CozinhaDTO toDto(Cozinha cozinha){
+        return new CozinhaDTO(cozinha.getId(), cozinha.getNome());
     }
 
     @Transactional
-    public void salvarCozinha(Cozinha cozinha){
-        this.cozinhaRepository.save(cozinha);
+    public void salvarCozinha(CozinhaDTO cozinha){
+        this.cozinhaRepository.save(toEntity(cozinha));
     }
 
     @Transactional
-    public void alterarCozinha(Cozinha cozinha) throws BusinessException{
+    public void alterarCozinha(CozinhaDTO cozinha) throws BusinessException{
+
         if (!cozinhaRepository.existsById(cozinha.getId())) {
             throw new BusinessException(String.format("Cozinha com ID %d não encontrada para atualização.", cozinha.getId()));
         }
 
         cozinhaRepository.updateById(cozinha.getId(), cozinha.getNome());
+
     }
 
     @Transactional
@@ -74,6 +71,37 @@ public class CozinhaService {
                 .orElseThrow(() -> new BusinessException("Cozinha não encontrada"));
 
         cozinhaRepository.delete(cozinha);
+
+    }
+
+    public CozinhaDTO buscarCozinhaId(Long idCozinha) throws BusinessException{
+
+        try {
+
+            Cozinha cozinha = cozinhaRepository.findOneById(idCozinha);
+
+            if (Optional.ofNullable(cozinha).isEmpty()) {
+                throw new BusinessException("Cozinha não encontrada");
+            }
+
+            return toDto(cozinha);
+
+        } catch (BusinessException e) {
+            throw new BusinessException(e.getMessage());
+        }
+
+    }
+
+    public List<CozinhaDTO> listarTodasCozinhas() throws BusinessException {
+
+        try {
+
+            List<Cozinha> cozinhas = cozinhaRepository.findAll();
+            return toDtoList(cozinhas);
+
+        } catch (BusinessException e) {
+            throw new BusinessException("Não foi possível listar todas as cozinhas");
+        }
 
     }
 

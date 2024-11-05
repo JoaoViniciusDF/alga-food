@@ -1,8 +1,7 @@
 package com.example.algafood.controller;
 
+import com.example.algafood.domain.dto.RestauranteDTO;
 import com.example.algafood.domain.exception.BusinessException;
-import com.example.algafood.domain.model.Cozinha;
-import com.example.algafood.domain.model.Restaurante;
 import com.example.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +24,7 @@ public class RestauranteController {
 
         try{
 
-            List<Restaurante> restaurantes = restauranteService.buscarTodosRestaurantes();
+            List<RestauranteDTO> restaurantes = restauranteService.buscarTodosRestaurantes();
 
             if (restaurantes.isEmpty()){
                 throw new BusinessException("Não existe restaurante!");
@@ -44,7 +43,7 @@ public class RestauranteController {
 
         try {
 
-            Restaurante restaurante = restauranteService.buscarRestaurantePorId(idRestaurante);
+            RestauranteDTO restaurante = restauranteService.buscarRestaurantePorId(idRestaurante);
 
             if(Optional.ofNullable(restaurante).isEmpty()){
                 return ResponseEntity.noContent().build();
@@ -60,7 +59,7 @@ public class RestauranteController {
 
     @PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> salvarCozinha(@RequestBody Restaurante restaurante){
+    public ResponseEntity<Object> salvarCozinha(@RequestBody RestauranteDTO restaurante){
         try {
 
             restauranteService.salvarRestaurante(restaurante);
@@ -72,7 +71,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{idCozinha}")
-    public ResponseEntity<Object> updateCozinha(@RequestBody Restaurante restaurante, @PathVariable("idCozinha") Long idRestaurante){
+    public ResponseEntity<Object> updateCozinha(@RequestBody RestauranteDTO restaurante, @PathVariable("idCozinha") Long idRestaurante){
         try {
 
             restaurante.setId(idRestaurante);
