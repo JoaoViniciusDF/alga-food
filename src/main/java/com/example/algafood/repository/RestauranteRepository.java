@@ -15,7 +15,13 @@ public interface RestauranteRepository extends JpaRepository<Restaurante, Long> 
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM tbl_restaurante WHERE id_cozinha = :idCozinha", nativeQuery = true)
-    void deleteByIdCozinha(@Param("idCozinha") Long idCozinha);
+    void deleteByCozinhaId(@Param("idCozinha") Long idCozinha);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "UPDATE tbl_restaurante SET nome=:nomeRestaurante WHERE id=:idRestaurante",
+            nativeQuery = true)
+    public void updateById(@Param("idRestaurante") Long id, @Param("nomeRestaurante") String nome);
 
 }

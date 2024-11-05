@@ -19,7 +19,7 @@ public class Restaurante {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne
     @NotNull(message = "${entity.notnull.message}")
     @JoinColumn(name = "id_cozinha")
     private Cozinha cozinha;

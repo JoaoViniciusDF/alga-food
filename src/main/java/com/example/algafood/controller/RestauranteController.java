@@ -1,14 +1,13 @@
 package com.example.algafood.controller;
 
 import com.example.algafood.domain.exception.BusinessException;
+import com.example.algafood.domain.model.Cozinha;
 import com.example.algafood.domain.model.Restaurante;
 import com.example.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,5 +56,43 @@ public class RestauranteController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
 
+    }
+
+    @PostMapping("/salvar")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Object> salvarCozinha(@RequestBody Restaurante restaurante){
+        try {
+
+            restauranteService.salvarRestaurante(restaurante);
+            return ResponseEntity.noContent().build();
+
+        }catch (BusinessException e){
+            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{idCozinha}")
+    public ResponseEntity<Object> updateCozinha(@RequestBody Restaurante restaurante, @PathVariable("idCozinha") Long idRestaurante){
+        try {
+
+            restaurante.setId(idRestaurante);
+            restauranteService.alterarRestaurante(restaurante);
+            return ResponseEntity.noContent().build();
+
+        }catch (BusinessException e){
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{idCozinha}")
+    public ResponseEntity<Object> deletarCozinha(@PathVariable("idCozinha") Long idRestaurante){
+        try {
+
+            restauranteService.deletarRestaurante(idRestaurante);
+            return ResponseEntity.noContent().build();
+
+        }catch (BusinessException e){
+            return ResponseEntity.unprocessableEntity().body(e.getMessage());
+        }
     }
 }

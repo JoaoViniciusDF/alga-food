@@ -15,10 +15,10 @@ public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
     public Cozinha findOneById(Long id);
 
     @Modifying
-    @Transactional
     @Query(
-            value = "UPDATE algafood.tbl_cozinha SET nome=:nomeCozinha WHERE id=:idCozinha",
-            nativeQuery = true)
-    public void updateById(@Param("idCozinha") Long id, @Param("nomeCozinha") String nome);
+            value = "UPDATE algafood.tbl_cozinha SET nome = :nomeCozinha WHERE id = :idCozinha",
+            nativeQuery = true
+    )
+    void updateById(@Param("idCozinha") Long id, @Param("nomeCozinha") String nome);
 
 }

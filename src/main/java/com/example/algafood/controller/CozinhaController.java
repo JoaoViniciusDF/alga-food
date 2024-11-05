@@ -1,5 +1,6 @@
 package com.example.algafood.controller;
 
+import com.example.algafood.domain.dto.CozinhaDTO;
 import com.example.algafood.domain.exception.BusinessException;
 import com.example.algafood.domain.model.Cozinha;
 import com.example.algafood.domain.service.CozinhaService;
@@ -23,7 +24,7 @@ public class CozinhaController {
     public ResponseEntity<List<Object>> listarCozinhas(){
         try{
 
-            List<Cozinha> cozinhas = cozinhaService.listarTodasCozinhas();
+            List<CozinhaDTO> cozinhas = cozinhaService.listarTodasCozinhas();
 
             if (cozinhas.isEmpty()) {
                 throw new BusinessException("Não existe cozinha!");
@@ -40,7 +41,7 @@ public class CozinhaController {
     public ResponseEntity<Object> buscarCozinhaId(@PathVariable("idCozinha") Long idCozinha){
         try{
 
-            Cozinha cozinha = cozinhaService.buscarCozinhaId(idCozinha);
+            CozinhaDTO cozinha = cozinhaService.buscarCozinhaId(idCozinha);
 
             if(Optional.ofNullable(cozinha).isEmpty()){
                 return ResponseEntity.noContent().build();

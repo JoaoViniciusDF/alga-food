@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -21,5 +23,8 @@ public class Cozinha {
     @NotNull(message = "${entity.notnull.message}")
     @Column(name = "nome")
     private String nome;
+
+    @OneToMany(mappedBy = "cozinha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Restaurante> restaurantes;
 
 }
